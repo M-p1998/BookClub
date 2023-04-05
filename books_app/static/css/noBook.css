@@ -1,0 +1,18 @@
+
+
+.no-books-found {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .no-books-found img {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+  
+  .no-books-found p {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  

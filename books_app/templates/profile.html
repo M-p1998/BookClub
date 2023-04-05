@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+    <!-- <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/view.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+
+    <title>Show book</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light ">
+        <h1 class="text-center">BookClub</h1>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto">
+          </ul>
+          <h1 class="text-center">Welcome {{current_user.first_name}}</h1>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/books/dashboard">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" a href="/books/add">Add book</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Logout">Log out</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <!-- <a href="/books/dashboard">Home</a>
+    <a href="/books/add">Add book</a>
+    <a href="/Logout">log out</a> -->
+    
+    <!-- <p>Name: {{one_user.first_name}} {{one_user.last_name}}</p>
+    <p>Email: {{one_user.email}}</p>
+    <p>Total Review: {{reviews.count}}</p>
+
+    <strong>Posted Reviews on the following books: </strong>
+    {% if reviews|length > 0 %}
+        {% for review in reviews %}
+            <a href="/books/view/{{review.book.id}}">{{review.book.title}}</a></br>
+        {% endfor %}
+    {% else %}
+            <p>none</p>
+    {% endif %} -->
+
+    <div class="container my-5 ">
+        <div class="row justify-content-center" >
+            <div class="col-md-5">
+                <div class="card bg-info" >
+                    <div class="card-body">
+                        <p class="card-text">Name: {{ one_user.first_name }} {{ one_user.last_name }}</p>
+                        <p class="card-text">Email: {{ one_user.email }}</p>
+                        <p class="card-text">Total Review: {{ reviews.count }}</p>
+    
+                        <strong>Posted Reviews on the following books: </strong>
+                        {% if reviews|length > 0 %}
+                            <ul class="list-group">
+                                {% for review in reviews %}
+                                    <!-- <ul class=""> -->
+                                        <a style="color:rgb(19, 5, 109)" href="/books/view/{{ review.book.id }}">{{ review.book.title }}</a>
+                                    <!-- </ul> -->
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>no review</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+</body>
+</html>

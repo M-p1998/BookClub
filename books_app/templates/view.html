@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+
+  <link rel="stylesheet" href="{% static 'css/view.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <title>{{one.title}}</title>
+
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light ">
+    <h1 class="text-center">BookClub</h1>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <form method="GET" action="/books/search" class="form-inline my-2 my-lg-0 ml-auto">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" name="searched" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <h1 class="text-center">Welcome {{current_user.first_name}}</h1>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/books/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/books/add">Add book</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Logout">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="container mt-4">
+    <div class="card bg-info">
+      <div class="card-body">
+        <h2 class="card-title">{{one.title}}</h2>
+        <h6 class="card-text mb-2 ">Author: {{one.author}}</h6>
+        <p class="card-text">Added by: <a style="color: rgb(0, 4, 255);"
+            href="/books/users/{{one.creator.id}}">{{one.creator.first_name}}</a></p>
+
+        {% if one.creator.id != request.session.user_id %}
+        <p class="card-text">{{one.description}}</p>
+        {% else %}
+        <form action="/books/update/{{one.id}}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" name="description" rows="3">{{one.description}}</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        {% endif %}
+
+        <p class="card-text">Likes: {{one.favorited_by.count}}</p>
+        {% if current_user in one.favorited_by.all %}
+        <a href="/books/unlike/{{one.id}}" class="btn btn-danger" role="button">Unlike</a>
+        {% else %}
+        <a href="/books/like/{{one.id}}" class="btn btn-success" role="button">Like</a>
+        {% endif %}
+
+        <hr>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <ul style="color:rgb(156, 22, 22);" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+          </ul>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="/books/add/review/{{one.id}}" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="content">Review:</label>
+            <textarea class="form-control" name="CONTENT" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="rating">Rating:</label>
+            <select class="form-control" name="RATING" required>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+            <input type="submit" class="btn btn-primary">
+        </form>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      {% for review in get_one %}
+      <div class="card-body">
+        <h5 class="card-title">{{ review.user.first_name }} - Rating: {{ review.rating }}</h5>
+        <p class="card-text">{{ review.content }}</p>
+        <p class="card-text"><small class="text-muted">Posted on: {{ review.created_at|date:"M d, Y" }}</small></p>
+        {% if review.user_id == request.session.user_id %}
+        <a href="/books/delete/{{ review.id }}" class="btn btn-danger">Delete this review</a>
+        {% endif %}
+        <hr style="background-color: black;">
+      </div>
+      {% endfor %}
+    </div>
+
+
+</body>
+
+</html>

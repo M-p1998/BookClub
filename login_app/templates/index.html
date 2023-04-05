@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+
+    {% if messages %}
+    {% for message in messages %}
+    <ul class="card-title" style="color:rgb(156, 22, 22);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: 40em;">{{ message }}</ul>
+    {% endfor %}
+    {% endif %}
+
+
+    <h1>Register</h1>
+
+    <form action="/register/user" method="post">
+        {% csrf_token %}
+        <p>
+            <label class="col-sm-6 col-form-label">First Name: </label>
+            <input class="col-sm-5" name="First_name" required>
+        </p>
+        <p>
+            <label class="col-sm-6 col-form-label">Last Name: </label>
+            <input class="col-sm-5" name="Last_name" required>
+        </p>
+        <p>
+            <label class="col-sm-6 col-form-label">Email: </label>
+            <input class="col-sm-5" type="email" id="email" name="Email" required>
+        </p>
+        <p>
+            <label class="col-sm-6 col-form-label">Password: </label>
+            <input class="col-sm-5" type="password" name="Password" required>
+        </p>
+        <p>
+            <label class="col-sm-6  col-form-label">Confirm password: </label>
+            <input class="col-sm-5" type="password" name="confirm_password" required>
+        </p>
+        <input class="btn btn-primary text-center" class="col-sm-2" value="Register" type="submit" />
+    </form>
+
+    <h1>Login </h1>
+
+    <form action="/login/user" method="post">
+        {% csrf_token %}
+        <p>
+            <label class="col-sm-6  col-form-label">Email: </label>
+            <input class="col-sm-5" name="Email" required>
+        </p>
+        <p>
+            <label class="col-sm-6  col-form-label">Password: </label>
+            <input class="col-sm-5" type="password" name="Password" required>
+        </p>
+
+        <input class="btn btn-primary" class="col-sm-2" value="Log in" type="submit" />
+    </form>
+</body>
+
+</html>
